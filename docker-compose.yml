@@ -37,6 +37,39 @@ services:
     depends_on:
       - prometheus
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+    networks:
+      - devops
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - devops
+
+  filebeat:
+    build:
+      context: ./filebeat
+    container_name: filebeat
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./app-logs:/src/logs
+    depends_on:
+      - elasticsearch
+      - kibana
+    networks:
+      - devops
+
 networks:
   devops:
     driver: bridge
