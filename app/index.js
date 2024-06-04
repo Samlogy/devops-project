@@ -1,26 +1,49 @@
 const express = require("express");
-
+const path = require("path");
+const dotenv = require('dotenv')
 
 const { metricsMiddleware } = require("./middlewares/monitoring");
 
 const routeHealth = require('./routes/health')
 const routeMonitoring = require('./routes/monitoring')
+const { routeS3, routeRDS } = require('./routes/aws_routes')
+
+dotenv.config({ path: '../.env' });
 
 
-const PORT = process.env.PORT || 3000;
+class Server {
+  constructor() {
+    this.app = express();
+    this.port = process.env.SERVER_PORT || 3000;
+    this.configureMiddleware();
+    this.configureRoutes();
+  }
 
-const app = express();
+  configureMiddleware() {
+    this.app.use(metricsMiddleware);
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.static(path.join(__dirname, "public")));
+    this.app.get("/", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+  }
 
-app.use(metricsMiddleware);
+  configureRoutes() {
+    routeHealth("/health-check", this.app);
+    routeMonitoring('/monitoring', this.app)
 
+    routeS3("/", this.app);
+    routeRDS("/", this.app);
 
-app.listen(PORT, () => {
-  console.log("server => ", PORT)
+    // others routes => tracing, 
+  }
 
-  routeHealth('/health-check', app);
+  start() {
+    this.app.listen(this.port, () => {
+      console.log(`Server => ${this.port}`);
+    });
+  }
+}
 
-  // Prometheus / Grafana *******************************************************
-  routeMonitoring('/monitoring', app)
-
-  // Tracing *******************************************************
-});
+const server = new Server();
+server.start();
