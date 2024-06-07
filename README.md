@@ -38,16 +38,63 @@ To check in Kibana and display your logs, follow these steps:
    - Create a new index pattern with the same name as the app and select `@timestamp`
    - Go to Discover and test to make other logs appear
 
+## AWS services
+
+There are two primary services: RDS and S3.
+
+- **RDS:** This service supports a range of CRUD operations, including: get, getById, post, updateById, deleteById
+- **S3:** This service offers a variety of file operations, such as: upload file, delete file, list files, getSignedUrl
+
+## Architecture
+
+The Node.js application is a monolith with a modular approach, which separates each distinct feature into its own module. This structure enhances maintainability and scalability.
+
+```bash
+├── app
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── logs
+│   │   └── app.log
+│   ├── middlewares
+│   │   └── monitoring.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── routes
+│   │   ├── aws_routes.js
+│   │   ├── health.js
+│   │   └── monitoring.js
+│   ├── services
+│   │   ├── aws_rds.js
+│   │   └── aws_s3.js
+│   └── utils
+│   ├── logger.js
+│   └── monitoring.js
+├── app-logs
+├── docker-compose.yml
+├── filebeat
+│   ├── Dockerfile
+│   └── filebeat.yml
+├── grafana
+│   ├── dashboards
+│   │   └── dashboard.json
+│   └── datasources
+│   └── datasource.yaml
+├── package-lock.json
+├── prometheus
+│   └── prometheus.yml
+└── README.md
+```
+
 ### NB:
 
-**build & run docker image:** \*\*\*\*
+\*\*build & run docker image:
 
 ```bash
 docker build -t node-api .
 docker run -p 3001:3001 node-api
 ```
 
-**build & run docker compose:** \*\*\*\*
+**build & run docker compose:**
 
 ```bash
 docker-compose up --build
