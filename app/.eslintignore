@@ -1,0 +1,13 @@
+node_modules/
+
+build/
+
+tests/
+
+.prettierrc.json
+
+package.json
+package-lock.json
+
+.eslintrc.js
+.eslint.config.js

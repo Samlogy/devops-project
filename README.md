@@ -1,3 +1,13 @@
+## Getting Started
+
+## Tech Stack
+
+1. Nodejs
+2. Prometheus / Grafana
+3. ELK
+4. AWS (EC2, RDS, S3)
+5. GitHub Actions
+
 ## Monitoring Node Prometheus + Grafana
 
 ### Prometheus
@@ -99,4 +109,12 @@ docker run -p 3001:3001 node-api
 ```bash
 docker-compose up --build
 docker-compose down
+```
+
+## Tests
+
+```bash
+npm test
+npm run test:unit
+npm run test:integration
 ```

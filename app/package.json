@@ -1,24 +1,39 @@
 {
-  "name": "app",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.18.2",
-    "express-prom-bundle": "^7.0.0",
-    "prom-client": "^15.1.0",
-    "winston": "^3.11.0",
-    "@aws-sdk/client-s3": "^3.481.0",
-    "@aws-sdk/s3-request-presigner": "^3.481.0",
-    "multer": "^1.4.5-lts.1",
-    "pg": "^8.7.1"
-  },
-  "scripts": {
-    "dev": "nodemon index",
-    "start": "node index"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  }
+    "name": "app",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "@aws-sdk/client-s3": "^3.481.0",
+        "@aws-sdk/s3-request-presigner": "^3.481.0",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.2",
+        "express-prom-bundle": "^7.0.0",
+        "multer": "^1.4.5-lts.1",
+        "pg": "^8.7.1",
+        "prom-client": "^15.1.0",
+        "winston": "^3.11.0"
+    },
+    "scripts": {
+        "dev": "nodemon index",
+        "start": "node index",
+        "test": "jest",
+        "test:unit": "jest tests/unit",
+        "test:integration": "jest tests/integration",
+        "prettier:check": "prettier --check .",
+        "prettier:fix": "prettier --write .",
+        "lint:check": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.4.0",
+        "eslint": "^9.4.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-prettier": "^5.1.3",
+        "globals": "^15.4.0",
+        "jest": "^29.7.0",
+        "nodemon": "^3.0.2",
+        "prettier": "^3.3.1",
+        "supertest": "^7.0.0"
+    }
 }
