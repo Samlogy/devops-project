@@ -95,7 +95,25 @@ The Node.js application is a monolith with a modular approach, which separates e
 └── README.md
 ```
 
-### NB:
+## Setup & Config Nodejs app (Eslint / Prettier)
+
+install these dev dependencies for eslint and prettier:
+
+```bash
+npm i -D eslint eslint-config-prettier prettier
+npx eslint --init
+```
+
+then change the content of .eslintrc.json & .prettierrc.json with corresponding one according to your needs.
+finally, add these scripts:
+
+```bash
+npm run prettier:check
+npm run prettier:write
+npm run lint:check
+```
+
+### NB
 
 \*\*build & run docker image:
 
@@ -117,4 +135,16 @@ docker-compose down
 npm test
 npm run test:unit
 npm run test:integration
+```
+
+## ORM
+
+```bash
+npm install @prisma/client
+npm install prisma --save-dev
+npx prisma init
+
+DATABASE_URL="postgresql://user:password@localhost:5432/mydb?schema=public"
+
+npx prisma generate
 ```
