@@ -122,7 +122,7 @@ jobs:
   #     - name: Run Vulnerability Test
   #       run: npm run synk
 
-  ci:
+  docker:
     name: Login Docker Hub => Build & Push Docker image
     # needs: tests
     runs-on: ubuntu-latest
@@ -156,35 +156,3 @@ jobs:
       #     file: ./Dockerfile
       #     push: true
       #     tags: ${{ env.DOCKER_USERNAME }}/clockbox:latest
-
-  cd:
-    needs: ci
-    runs-on: ubuntu-latest
-    steps:
-      - name: Pull Docker image
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest'
-
-      - name: Stop running container
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker stop node-app || true'
-          ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker rm -f node-app || true'
-
-      - name: Run new container
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker run -d --name node-app -p 3000:3000 ${{ env.DOCKER_USERNAME }}/node-app:latest'
-
-    # - name: Connect to EC2 instance
-    #   run: ssh ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} -i ${{ env.AWS_PRIVATE_KEY }} -p ${{env.AWS_EC2_PORT}}
-    
-    # - name: Login to Docker HUB
-    #   run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
-
-    # - name: Pull image from docker hub
-    #   run: docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest
-
-    # - name: Delete old container
-    #   run: docker rm -f node-app:latest
-
-    # - name: Run docker container
-    #   run: docker run -d -p 3000:3000 --name node-app ${{ env.DOCKER_USERNAME }}/node-app:latest
