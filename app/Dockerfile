@@ -2,10 +2,14 @@ FROM node:20-alpine3.18
 
 WORKDIR /app
 
-COPY package-lock.json package.json ./
+COPY package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
+
+COPY .env ./
+
+EXPOSE 3000
 
 CMD ["npm", "start"]

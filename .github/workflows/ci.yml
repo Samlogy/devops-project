@@ -6,6 +6,11 @@ on:
       - main
       - dev
 
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  AWS_PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY }}
+
 jobs:
   # config:
   #   name: Config & Setup => Eslint/Prettier
@@ -149,3 +154,16 @@ jobs:
       #     file: ./Dockerfile
       #     push: true
       #     tags: ${{ secrets.DOCKER_USERNAME }}/clockbox:latest
+  
+  # deploy:
+  #   needs: docker_img
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Pull image from docker hub
+  #       run: docker pull sammmmmm/node-app:1.0
+
+  #     - name: Delete old container
+  #       run: docker rm -f node-app
+
+  #     - name: Run docker container
+  #       run: docker run -d -p 3000:3000 --name node-app sammmmmm/node-app:1.0
