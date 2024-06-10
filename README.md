@@ -53,3 +53,86 @@ docker run -p 3001:3001 node-api
 docker-compose up --build
 docker-compose down
 ```
+
+
+
+* build node-app image + version tag:
+docker build -t sammmmmm/node-app:latest .
+
+* create a container from the image: 
+docker run node-app:latest  
+docker run -d -p 3000:3000 --name node-app sammmmmm/node-app:latest 
+
+
+
+cree un compte AWS
+ ec2, RDS, S3, SM
+
+tester EC2 + GITHUB ACTIONS TO DEPLOY PROD
+
+
+## Pipeline:
+**CI:** config => build => tests => sonarqube => synk => docker hub (log, build, push)
+**CD:** connect ec2 => docker hub (log, pull) => ec2 (stop, delete container) => run ocker container
+
+## AWS
+create an aws account
+
+**AWS Credentials:**
+- email: senanisammy@gmail.com 
+- password: #3TyjzG5CiYRr_^
+
+**create multiple services**: ec2, s3, service manager, rds.
+
+## EC2:
+- **update & upgrade:**
+```bash
+sudo apt update
+sudo apt upgrade
+sudo apt install curl
+```
+
+- **install node/npm:**
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+```
+- **install global dependencies:** `sudo npm install pm2 -g`
+- **configure nginx:**
+  
+```bash
+sudo apt-get install nginx
+sudo nano /etc/nginx/sites-available/default
+```
+
+```bash
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    /home/ubuntu/devops-project/app;   
+    index index.html;
+
+    server_name www.rahulvikhe.com rahulvikhe.com;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+```bash
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl status nginx
+```
+
+
+## ROUTE 53:
+associate ec2 instance ip address with domain name
+
+## ACM:
+put an ssl/tls cerificate on the domain name
+
+`https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18`
