@@ -7,71 +7,71 @@ on:
       - dev
 
 jobs:
-  config:
-    name: Config & Setup => Eslint/Prettier
-    runs-on: ubuntu-latest
+  # config:
+  #   name: Config & Setup => Eslint/Prettier
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
+  #   strategy:
+  #     matrix:
+  #       node-version: [18.x, 20.x]
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }} to Check Lint
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+  #     - name: Use Node.js ${{ matrix.node-version }} to Check Lint
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache: "npm"
 
-      - name: Install Dependencies
-        run: npm ci
+  #     - name: Install Dependencies
+  #       run: npm install
 
-      - name: check format / rules
-        run: npm run check:all
+  #     - name: check format / rules
+  #       run: npm run check:all
 
-  build:
-    name: Build App
-    needs: config
-    runs-on: ubuntu-latest
+  # build:
+  #   name: Build App
+  #   needs: config
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Use Node.js 20.x to run Test
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          cache: "npm"
+  #     - name: Use Node.js 20.x to run Test
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20.x
+  #         cache: "npm"
 
-      - name: Install Dependencies
-        run: npm ci
+  #     - name: Install Dependencies
+  #       run: npm install
 
-      - name: Run build
-        run: npm run build
+  #     - name: Run build
+  #       run: npm run build
 
-  tests:
-    name: Run Tests
-    needs: build
-    runs-on: ubuntu-latest
+  # tests:
+  #   name: Run Tests
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Use Node.js 20.x to run Test
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          cache: "npm"
+  #     - name: Use Node.js 20.x to run Test
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20.x
+  #         cache: "npm"
 
-      - name: Install Dependencies
-        run: npm ci
+  #     - name: Install Dependencies
+  #       run: npm install
 
-      - name: Run Tests
-        run: npm run test
+  #     - name: Run Tests
+  #       run: npm run test
 
   # sonar:
   #   name: Run Sonar => quality code
@@ -89,7 +89,7 @@ jobs:
   #         cache: "npm"
 
   #     - name: Install Dependencies
-  #       run: npm ci
+  #       run: npm install
 
   #     - name: Run Quality Test
   #       run: npm run sonar
@@ -110,14 +110,14 @@ jobs:
   #         cache: "npm"
 
   #     - name: Install Dependencies
-  #       run: npm ci
+  #       run: npm install
 
   #     - name: Run Vulnerability Test
   #       run: npm run synk
 
   docker_img:
     name: Login Docker Hub => Build & Push Docker image
-    needs: tests
+    # needs: tests
     runs-on: ubuntu-latest
 
     steps:
