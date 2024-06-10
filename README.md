@@ -136,3 +136,19 @@ associate ec2 instance ip address with domain name
 put an ssl/tls cerificate on the domain name
 
 `https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18`
+
+
+## Client (React)
+
+install 
+
+```bash
+npm install cypress --save-dev
+```
+
+add these scripts:
+
+```bash
+"test": "npx cypress run",
+"cypress:open": "npx cypress open"
+```
