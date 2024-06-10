@@ -1,0 +1,47 @@
+name: Node App CI/CD
+on:
+  # add event trigger pipeline => push / pull ...
+  push:
+    branches:
+      - main
+      - dev
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  AWS_EC2_KEY: ${{ secrets.AWS_EC2_KEY }}
+  AWS_EC2_USERNAME: ${{ secrets.AWS_EC2_USERNAME }}
+  AWS_EC2_IP: ${{ secrets.AWS_EC2_IP }}
+
+jobs:
+    cd:
+        needs: ci
+        runs-on: ubuntu-latest
+        steps:
+        - name: Pull Docker image
+            run: |
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest'
+
+        - name: Stop running container
+            run: |
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker stop node-app || true'
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker rm -f node-app || true'
+
+        - name: Run new container
+            run: |
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker run -d --name node-app -p 3000:3000 ${{ env.DOCKER_USERNAME }}/node-app:latest'
+
+        # - name: Connect to EC2 instance
+        #   run: ssh ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} -i ${{ env.AWS_PRIVATE_KEY }} -p ${{env.AWS_EC2_PORT}}
+
+        # - name: Login to Docker HUB
+        #   run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
+
+        # - name: Pull image from docker hub
+        #   run: docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest
+
+        # - name: Delete old container
+        #   run: docker rm -f node-app:latest
+
+        # - name: Run docker container
+        #   run: docker run -d -p 3000:3000 --name node-app ${{ env.DOCKER_USERNAME }}/node-app:latest
