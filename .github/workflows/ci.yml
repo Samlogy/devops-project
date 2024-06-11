@@ -38,26 +38,26 @@ jobs:
   #     - name: check format / rules
   #       run: npm run check:all
 
-  # build:
-  #   name: Build App
-  #   needs: config
-  #   runs-on: ubuntu-latest
+  build:
+    name: Build App
+    # needs: config
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  #     - name: Use Node.js 20.x to run Test
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 20.x
-  #         cache: "npm"
+      - name: Use Node.js 20.x to run Test
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: "npm"
 
-  #     - name: Install Dependencies
-  #       run: npm install
+      - name: Install Dependencies
+        run: npm install
 
-  #     - name: Run build
-  #       run: npm run build
+      - name: Run build
+        run: npm run build --if-present
 
   # tests:
   #   name: Run Tests
@@ -122,7 +122,7 @@ jobs:
   #     - name: Run Vulnerability Test
   #       run: npm run synk
 
-  docker:
+  hub:
     name: Login Docker Hub => Build & Push Docker image
     # needs: tests
     runs-on: ubuntu-latest
@@ -135,10 +135,10 @@ jobs:
         run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t sammmmmm/node-app ./app
+        run: docker build -t ${{ env.DOCKER_USERNAME }}/node-app ./app
 
       - name: Push image to Docker HUB
-        run: docker push sammmmmm/node-app:latest
+        run: docker push ${{ env.DOCKER_USERNAME }}/node-app:latest
 
       # - name: Login to Docker Hub
       #   uses: docker/login-action@v3
