@@ -1,0 +1,63 @@
+version: "3"
+services:
+  prometheus:
+    image: prom/prometheus:v2.48.0-rc.2
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - devops
+    # depends_on:
+    #   - node-app
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3001:3000"
+    networks:
+      - devops
+    volumes:
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin # Change this password for security
+    depends_on:
+      - prometheus
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+    # networks:
+    #   - devops
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    # networks:
+    #   - devops
+
+  filebeat:
+    build:
+      context: ./filebeat
+    container_name: filebeat
+    command: filebeat -e -strict.perms=false
+    volumes:
+      - ./app-logs:/src/logs
+    depends_on:
+      - elasticsearch
+      - kibana
+    # networks:
+    #   - devops
+
+networks:
+  devops:
+    driver: bridge

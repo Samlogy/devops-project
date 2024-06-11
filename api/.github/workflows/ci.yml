@@ -1,4 +1,4 @@
-name: Node App CI/CD
+name: Node App CD
 on:
   # add event trigger pipeline => push / pull ...
   push:
@@ -135,7 +135,7 @@ jobs:
         run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ env.DOCKER_USERNAME }}/node-app ./app
+        run: docker build -t ${{ env.DOCKER_USERNAME }}/node-app ../..
 
       - name: Push image to Docker HUB
         run: docker push ${{ env.DOCKER_USERNAME }}/node-app:latest
