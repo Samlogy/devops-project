@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "test": "npx cypress run",
-    "cypress:open": "npx cypress open"
+    "e2e:run": "npx cypress run",
+    "e2e:open": "npx cypress open"
   },
   "devDependencies": {
     "cypress": "^12.17.2",

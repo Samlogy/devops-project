@@ -1,24 +1,12 @@
-// import 'cypress-keycloak';
-
 Cypress.on('uncaught:exception', (err, runnable) => {
     return false
 })
 
+const url = "<http://localhost:5173>"
 
-describe('it should test Customer Features', () => {
-    // beforeEach(() => {
-    //     cy.login({
-    //         root: 'http://ci.check-consulting.net:10000',
-    //         realm: 'staff-manager-admin',
-    //         username: 'mchekini',
-    //         password: 'test',
-    //         client_id: 'staff-manager-admin-client',
-    //         redirect_uri: 'http://check-consulting.net:81',
-    //     });
-    //     cy.visit("http://check-consulting.net:81");
-    // });
-
+describe('it should test Client App', () => {
     it("Upload single file", () => {
+        // cy.visit(url)
     })
 
     it("Upload multiple files", () => {

@@ -38,7 +38,7 @@ To check in Kibana and display your logs, follow these steps:
    - Create a new index pattern with the same name as the app and select `@timestamp`
    - Go to Discover and test to make other logs appear
 
-### NB:
+### NB
 
 **build & run docker image:** \*\*\*\*
 
@@ -54,38 +54,26 @@ docker-compose up --build
 docker-compose down
 ```
 
+##  Pipeline
 
-
-* build node-app image + version tag:
-docker build -t sammmmmm/node-app:latest .
-
-* create a container from the image: 
-docker run node-app:latest  
-docker run -d -p 3000:3000 --name node-app sammmmmm/node-app:latest 
-
-
-
-cree un compte AWS
- ec2, RDS, S3, SM
-
-tester EC2 + GITHUB ACTIONS TO DEPLOY PROD
-
-
-## Pipeline:
 **CI:** config => build => tests => sonarqube => synk => docker hub (log, build, push)
 **CD:** connect ec2 => docker hub (log, pull) => ec2 (stop, delete container) => run ocker container
 
 ## AWS
+
 create an aws account
 
 **AWS Credentials:**
-- email: senanisammy@gmail.com 
+
+- email: <senanisammy@gmail.com>
 - password: #3TyjzG5CiYRr_^
 
 **create multiple services**: ec2, s3, service manager, rds.
 
-## EC2:
+## EC2
+
 - **update & upgrade:**
+
 ```bash
 sudo apt update
 sudo apt upgrade
@@ -93,11 +81,13 @@ sudo apt install curl
 ```
 
 - **install node/npm:**
+
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 ```
+
 - **install global dependencies:** `sudo npm install pm2 -g`
 - **configure nginx:**
   
@@ -128,27 +118,46 @@ sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
+##  Route 53
 
-## ROUTE 53:
 associate ec2 instance ip address with domain name
 
-## ACM:
+## ACM
+
 put an ssl/tls cerificate on the domain name
 
 `https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18`
 
+##  Client (React)
 
-## Client (React)
+a react app in the front side.
+- add a pipeline ci/cd
+  - automate integration of code
+  - automate deployment of code
 
-install 
+install
 
 ```bash
 npm install cypress --save-dev
 ```
 
-add these scripts:
+##  Testing
+
+###  E2E Automation
+
+- create a new projet `/testing/e2e`
+- configure some config to access my remote database in AWS.
+- write automation scripts.
+- add these scripts:
 
 ```bash
 "test": "npx cypress run",
 "cypress:open": "npx cypress open"
 ```
+
+- add a workflow crojob that will run automaticly everyday at 0am
+
+### Gatling Automation
+
+- create a new projet `/testing/gatling`
+- add a workflow crojob that will run automaticly everyday at 0am
