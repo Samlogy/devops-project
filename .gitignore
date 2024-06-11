@@ -2,3 +2,4 @@
 /app/logs/*
 .env
 /client/node_modules
+todo.txt
