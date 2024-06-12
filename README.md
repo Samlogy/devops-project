@@ -1,12 +1,11 @@
-## Monitoring Node Prometheus + Grafana
+## Monitoring
 
 ### Prometheus
 
 1. go to: `http://localhost:9090`
 2. go graph tab enter metric name "cpu_usage_percent" in search field
 
-### App
-
+**Access via links:**
 1. check all metrics (prometheus): `http://localhost:3000/metrics`
 2. launch test scenario for our app
 3. check all metrics (prometheus): `http://localhost:3000/health`
@@ -38,16 +37,9 @@ To check in Kibana and display your logs, follow these steps:
    - Create a new index pattern with the same name as the app and select `@timestamp`
    - Go to Discover and test to make other logs appear
 
-### NB
+## Launch Project
 
-**build & run docker image:** \*\*\*\*
-
-```bash
-docker build -t node-api .
-docker run -p 3001:3001 node-api
-```
-
-**build & run docker compose:** \*\*\*\*
+**build & run docker compose:**
 
 ```bash
 docker-compose up --build
@@ -56,8 +48,8 @@ docker-compose down
 
 ##  Pipeline
 
-**CI:** config => build => tests => sonarqube => synk => docker hub (log, build, push)
-**CD:** connect ec2 => docker hub (log, pull) => ec2 (stop, delete container) => run ocker container
+- **CI:** config => build => tests => sonarqube => synk => docker hub (log, build, push).
+- **CD:** connect ec2 => docker hub (log, pull) => ec2 (delete force container) => run docker container.
 
 ## AWS
 
@@ -65,12 +57,14 @@ create an aws account
 
 **AWS Credentials:**
 
-- email: <senanisammy@gmail.com>
-- password: #3TyjzG5CiYRr_^
+```bash
+email: <senanisammy@gmail.com>
+password: #3TyjzG5CiYRr_^
+```
 
-**create multiple services**: ec2, s3, service manager, rds.
+- **create multiple services**: EC2, S3, RDS, Service Manager.
 
-## EC2
+### EC2
 
 - **update & upgrade:**
 
@@ -118,11 +112,11 @@ sudo systemctl start nginx
 sudo systemctl status nginx
 ```
 
-##  Route 53
+###  Route 53
 
 associate ec2 instance ip address with domain name
 
-## ACM
+### ACM
 
 put an ssl/tls cerificate on the domain name
 
@@ -130,18 +124,31 @@ put an ssl/tls cerificate on the domain name
 
 ##  Client (React)
 
-a react app in the front side.
-- add a pipeline ci/cd
-  - automate integration of code
-  - automate deployment of code
+- create a projet `/client` that will have:
+  - pipeline workflow `/client/.github/workflows`: ci/cd => automate integration / deployment.
+  - the react app `/client`
+- the react app will have these main features:
+  - list all files present inside the s3 bucket
+  - add single / multiple files to s3 bucket
+  - add a new todo to rds
 
-install
+- Stating react app
+npm run dev // dev
+npm run build // build
+npm run build:docker // create docker image & run it
+npm run prod // production
 
 ```bash
-npm install cypress --save-dev
+docker build -t client-app .
+docker run -p 3002:5173 client-app
 ```
 
 ##  Testing
+
+- create a projet `/tesing` that will have:
+  - pipeline workflow `/tesing/.github/workflows`: ci/cd => automate integration / deployment.
+  - test performence / work load `/tesing/gatling`.
+  - test ui e2e `/tesing/e2e`.
 
 ###  E2E Automation
 
@@ -151,13 +158,34 @@ npm install cypress --save-dev
 - add these scripts:
 
 ```bash
-"test": "npx cypress run",
-"cypress:open": "npx cypress open"
+"e2e:run": "npx cypress run", // run all e2e tests
+"e2e:open": "npx cypress open" // open cypress ui
 ```
 
 - add a workflow crojob that will run automaticly everyday at 0am
+- archiver les rapports aprés chaque test
 
 ### Gatling Automation
 
 - create a new projet `/testing/gatling`
 - add a workflow crojob that will run automaticly everyday at 0am
+- archiver les rapports aprés chaque test
+
+`https://docs.cypress.io/guides/references/cypress-studio`
+
+##  Infra
+
+- create a projet `/infra` that will have:
+  - pipeline workflow `/infra/.github/workflows`: ci/cd => automate integration / deployment.
+  - provisionning `/infra/terraform`.
+  - managing `/infra/ansible`.
+
+
+### NB
+
+**build & run docker image:** \*\*\*\*
+
+```bash
+docker build -t node-api . // build docker image
+docker run -p 3001:3001 node-api // run docker container
+```

@@ -1,13 +1,13 @@
 FROM node:20-alpine3.18
 
-WORKDIR /api
+WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3002
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
