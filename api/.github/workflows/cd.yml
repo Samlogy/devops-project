@@ -1,4 +1,4 @@
-name: Node App CI
+name: Node App CD
 on:
   # add event trigger pipeline => push / pull ...
   push:
@@ -9,9 +9,9 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  AWS_EC2_KEY: ${{ secrets.AWS_EC2_KEY }}
-  AWS_EC2_USERNAME: ${{ secrets.AWS_EC2_USERNAME }}
-  AWS_EC2_IP: ${{ secrets.AWS_EC2_IP }}
+  AWS_EC2_KEY_API_API: ${{ secrets.AWS_EC2_KEY_API_API }}
+  AWS_EC2_USERNAME_API_API: ${{ secrets.AWS_EC2_USERNAME_API_API }}
+  AWS_EC2_IP_API_API: ${{ secrets.AWS_EC2_IP_API_API }}
 
 jobs:
     cd:
@@ -20,19 +20,19 @@ jobs:
         steps:
         - name: Pull Docker image
             run: |
-            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest'
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY_API }} ${{ env.AWS_EC2_USERNAME_API }}@${{ env.AWS_EC2_IP_API_API }} 'sudo docker pull ${{ env.DOCKER_USERNAME }}/node-app:latest'
 
         - name: Stop running container
             run: |
-            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker stop node-app || true'
-            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker rm -f node-app || true'
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY_API }} ${{ env.AWS_EC2_USERNAME_API }}@${{ env.AWS_EC2_IP_API }} 'sudo docker stop node-app || true'
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY_API }} ${{ env.AWS_EC2_USERNAME_API }}@${{ env.AWS_EC2_IP_API }} 'sudo docker rm -f node-app || true'
 
         - name: Run new container
             run: |
-            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY }} ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} 'sudo docker run -d --name node-app -p 3000:3000 ${{ env.DOCKER_USERNAME }}/node-app:latest'
+            ssh -o StrictHostKeyChecking=no -i ${{ env.AWS_EC2_KEY_API }} ${{ env.AWS_EC2_USERNAME_API }}@${{ env.AWS_EC2_IP_API }} 'sudo docker run -d --name node-app -p 3000:3000 ${{ env.DOCKER_USERNAME }}/node-app:latest'
 
         # - name: Connect to EC2 instance
-        #   run: ssh ${{ env.AWS_EC2_USERNAME }}@${{ env.AWS_EC2_IP }} -i ${{ env.AWS_PRIVATE_KEY }} -p ${{env.AWS_EC2_PORT}}
+        #   run: ssh ${{ env.AWS_EC2_USERNAME_API }}@${{ env.AWS_EC2_IP_API }} -i ${{ env.AWS_PRIVATE_KEY_API }} -p ${{env.AWS_EC2_PORT_API}}
 
         # - name: Login to Docker HUB
         #   run: docker login -u ${{ env.DOCKER_USERNAME }} -p ${{ env.DOCKER_PASSWORD }}

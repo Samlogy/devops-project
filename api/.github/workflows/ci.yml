@@ -1,4 +1,4 @@
-name: Node App CD
+name: Node App CI
 on:
   # add event trigger pipeline => push / pull ...
   push:
@@ -9,9 +9,6 @@ on:
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  AWS_EC2_KEY: ${{ secrets.AWS_EC2_KEY }}
-  AWS_EC2_USERNAME: ${{ secrets.AWS_EC2_USERNAME }}
-  AWS_EC2_IP: ${{ secrets.AWS_EC2_IP }}
 
 jobs:
   # config:

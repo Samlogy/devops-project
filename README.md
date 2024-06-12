@@ -120,7 +120,6 @@ associate ec2 instance ip address with domain name
 
 put an ssl/tls cerificate on the domain name
 
-`https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18`
 
 ##  Client (React)
 
@@ -188,4 +187,11 @@ docker run -p 3002:5173 client-app
 ```bash
 docker build -t node-api . // build docker image
 docker run -p 3001:3001 node-api // run docker container
+```
+
+**useful links:**
+
+```bash
+- https://plainenglish.io/blog/step-by-step-guide-to-dockerize-react-app-created-using-vite
+- https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18
 ```
