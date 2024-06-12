@@ -6,6 +6,7 @@
 2. go graph tab enter metric name "cpu_usage_percent" in search field
 
 **Access via links:**
+
 1. check all metrics (prometheus): `http://localhost:3000/metrics`
 2. launch test scenario for our app
 3. check all metrics (prometheus): `http://localhost:3000/health`
@@ -84,7 +85,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 
 - **install global dependencies:** `sudo npm install pm2 -g`
 - **configure nginx:**
-  
+
 ```bash
 sudo apt-get install nginx
 sudo nano /etc/nginx/sites-available/default
@@ -95,7 +96,7 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
-    /home/ubuntu/devops-project/app;   
+    /home/ubuntu/devops-project/app;
     index index.html;
 
     server_name www.rahulvikhe.com rahulvikhe.com;
@@ -120,22 +121,22 @@ associate ec2 instance ip address with domain name
 
 put an ssl/tls cerificate on the domain name
 
-
 ##  Client (React)
 
 - create a projet `/client` that will have:
   - pipeline workflow `/client/.github/workflows`: ci/cd => automate integration / deployment.
   - the react app `/client`
 - the react app will have these main features:
+
   - list all files present inside the s3 bucket
   - add single / multiple files to s3 bucket
   - add a new todo to rds
 
 - Stating react app
-npm run dev // dev
-npm run build // build
-npm run build:docker // create docker image & run it
-npm run prod // production
+  npm run dev // dev
+  npm run build // build
+  npm run build:docker // create docker image & run it
+  npm run prod // production
 
 ```bash
 docker build -t client-app .
@@ -179,6 +180,12 @@ docker run -p 3002:5173 client-app
   - provisionning `/infra/terraform`.
   - managing `/infra/ansible`.
 
+## Environment
+
+I have 2 environments:
+
+- dev: `docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file .env.dev up`
+- prod: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up -d`
 
 ### NB
 
