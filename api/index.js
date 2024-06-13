@@ -32,14 +32,16 @@ class Server {
   configureRoutes() {
     routeHealth("/health-check", this.app);
     routeMonitoring("/monitoring", this.app);
+    
+    // others routes => tracing,
 
     routeS3("/", this.app);
     routeRDS("/", this.app);
 
-    // others routes => tracing,
     this.app.use(function (req, res, next) {
       res.status(404).json({ message: "Not Found 404 😞" });
     });
+
     this.app.use(function (err, req, res, next) {
       console.error(err.stack);
       res.status(500).json(err);

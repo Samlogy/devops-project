@@ -4,6 +4,16 @@
 
 1. go to: `http://localhost:9090`
 2. go graph tab enter metric name "cpu_usage_percent" in search field
+3. ** build & start docker monitoring: **
+```bash
+docker compose -f docker-compose.dev.yml --env-file .env.dev up --build
+docker compose down
+```
+
+```bash
+docker compose -f docker-compose.prod.yml --env-file .env.prod up --build
+docker compose down
+```
 
 **Access via links:**
 
@@ -38,14 +48,14 @@ To check in Kibana and display your logs, follow these steps:
    - Create a new index pattern with the same name as the app and select `@timestamp`
    - Go to Discover and test to make other logs appear
 
-## Launch Project
+<!-- ##  Launch Project
 
 **build & run docker compose:**
 
 ```bash
 docker-compose up --build
 docker-compose down
-```
+``` -->
 
 ##  Pipeline
 
@@ -138,9 +148,13 @@ put an ssl/tls cerificate on the domain name
   npm run build:docker // create docker image & run it
   npm run prod // production
 
+- this argument `--build-arg` can be used to specify which environment to launch on: `dev`, `prod`.
+
+**build & run docker React App:**
+
 ```bash
-docker build -t client-app .
-docker run -p 3002:5173 client-app
+docker build --build-arg NODE_ENV=dev -t react-app .
+docker run -p 3002:5173 react-app
 ```
 
 ##  Testing
@@ -187,18 +201,24 @@ I have 2 environments:
 - dev: `docker-compose -f docker-compose.yml -f docker-compose.dev.yml --env-file .env.dev up`
 - prod: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up -d`
 
-### NB
+##  Node API
 
-**build & run docker image:** \*\*\*\*
+- this argument `--build-arg` can be used to specify which environment to launch on: `dev`, `prod`.
+-
+
+**build & run docker Node Api:**
 
 ```bash
-docker build -t node-api . // build docker image
-docker run -p 3001:3001 node-api // run docker container
+docker build --build-arg NODE_ENV=dev -t node-app .
+docker run -p 3000:3000 node-app
 ```
+
+### NB
 
 **useful links:**
 
 ```bash
 - https://plainenglish.io/blog/step-by-step-guide-to-dockerize-react-app-created-using-vite
 - https://medium.com/@rahulvikhe25/configure-node-js-on-ec2-with-cloudfront-route-53-and-aws-certificate-manager-d9ae6d364a18
+- 
 ```
