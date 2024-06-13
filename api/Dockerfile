@@ -8,6 +8,10 @@ RUN npm ci
 
 COPY . .
 
+ARG NODE_ENV=dev
+
+COPY .env.${NODE_ENV} .env
+
 EXPOSE 3000
 
 CMD ["npm", "start"]

@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
+ARG NODE_ENV=dev
+
+COPY .env.${NODE_ENV} .env
+
 EXPOSE 3002
 
 CMD ["npm", "run", "dev"]
