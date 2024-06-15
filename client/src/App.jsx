@@ -1,16 +1,23 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./App.css";
 
 export default function App() {
   const [items, setItems] = useState([]);
   const [file, setFile] = useState(null);
-  const textRef = useRef();
-
   const [files, setFiles] = useState([]);
+
+  const [status, setStatus] = useState(false);
+
+  const textRef = useRef();
 
   const handleFileChange = (e) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
+    }
+  };
+  const handleFilesChange = (e) => {
+    if (e.target.files) {
+      setFiles(e.target.files);
     }
   };
 
@@ -19,42 +26,47 @@ export default function App() {
     const newItem = textRef.current.value;
     console.log(newItem);
     if (!newItem) {
-      setItems([...items, { title: newItem }]);
-      textRef.current.value = "";
       // push to RDS
+      textRef.current.value = "";
     }
   };
-
-  const handleFilesChange = (e) => {
-    if (e.target.files) {
-      setFiles(e.target.files);
-    }
-  };
-
   const onSingleFile = async () => {
     if (file) {
       console.log("file => ", file);
       const formData = new FormData();
       formData.append("file", file);
       // api call => post
+      setStatus(true);
     }
+    setTimeout(() => {
+      setStatus(false);
+    }, 100);
   };
-
   const onMultipleFile = async () => {
     if (files) {
-      console.log('files => ', files)
+      console.log("files => ", files);
       const formData = new FormData();
       [...files].forEach((file) => {
         formData.append("files", file);
       });
+      setStatus(true);
     }
+    setTimeout(() => {
+      setStatus(false);
+    }, 100);
   };
+
+  useEffect(() => {
+    if (status) {
+      // fetching item from S3
+    }
+  }, [status]);
 
   return (
     <div className="container">
       <h2>Todo App</h2>
 
-      <div>
+      <form>
         <h3>Single File</h3>
         <div>
           <label htmlFor="file" className="sr-only">
@@ -63,9 +75,9 @@ export default function App() {
           <input id="file" type="file" onChange={handleFileChange} />
         </div>
         <button onClick={onSingleFile}>Upload a file</button>
-      </div>
+      </form>
 
-      <div>
+      <form>
         <h3>Multiple Files:</h3>
         <div className="input-group">
           <label htmlFor="file" className="sr-only">
@@ -78,7 +90,7 @@ export default function App() {
         <button onClick={onMultipleFile} className="submit">
           Upload {files.length > 1 ? "files" : "a file"}
         </button>
-      </div>
+      </form>
 
       <form onSubmit={onSubmit}>
         <h3>RDS</h3>
